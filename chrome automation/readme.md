@@ -1,0 +1,1 @@
+Open websites in the csv file and click randomly to generate fingerprint cookies to warm up browsers.
