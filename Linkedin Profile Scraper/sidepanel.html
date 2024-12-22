@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkedin Profile Scraper</title>
+    <style>
+        /* General body styling */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f3f2ef;
+            /* LinkedIn-style background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .center-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+
+        h1 {
+            color: #0a66c2;
+            /* LinkedIn blue color */
+            margin-bottom: 2rem;
+            font-size: 24px;
+        }
+
+        button {
+            background-color: #0a66c2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004182;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+
+        /* For the commented out pause-resume container */
+        .pause-resume-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+
+    .input-container textarea {
+        transition: border-color 0.3s ease;
+    }
+
+    .input-container textarea:empty,
+    .input-container textarea:invalid {
+        border-color: #ff6b6b;
+    }
+
+    .input-container textarea:valid {
+        border-color: #51cf66;
+    }
+
+    #urlCounter {
+        font-size: 0.9em;
+        transition: color 0.3s ease;
+    }
+
+    .url-warning {
+        color: #ff6b6b;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    .message-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.message-container p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="center-container">
+        <h1>Linkedin Profile Scraper</h1>
+
+        <div class="input-container">
+            <textarea id="urlInput" placeholder="Enter URLs (one per line)" rows="12" style="width: 100%; margin-bottom: 10px;"></textarea>
+            <div id="urlCounter" style="margin-bottom: 10px; color: #e92828;"></div>
+        </div>
+        
+        
+        <button id="startButton">Start</button>
+        <button id="download">Download</button>
+
+        <div class="message-container">
+            <p id="collectedProfiles">Collected Profiles: 0</p>
+            
+        </div>
+
+    </div>
+    <!-- <div class="message-container">
+        <p id="collectedProfiles">Collected Profiles: 0</p>
+        
+    </div> -->
+
+    <!-- <div class="pause-resume-container">
+        <button id="pauseResumeButton">Pause/Resume</button>
+    </div> -->
+
+    <script src="sidepanel.js"></script>
+</body>
+
+</html>

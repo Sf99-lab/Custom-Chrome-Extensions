@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "Linkedin Profile Scraper",
+    "version": "1.0.0",
+    "description": "Scrape profile links of peoples on Linkedin",
+    "permissions": [
+      "storage",
+      "activeTab",
+      "scripting",
+      "sidePanel"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_title": "Linkedin Profile Scraper"
+    },
+    "side_panel": {
+      "default_path": "sidepanel.html"
+    },
+    "host_permissions": ["<all_urls>"]
+  }

@@ -1,0 +1,1 @@
+Scrape linkedin profile links. Use search urls in the extension to get started. 
