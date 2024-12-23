@@ -142,7 +142,7 @@ async function extractLinkedInProfiles(tabId) {
                 target: { tabId },
                 func: () => {
                     return Array.from(
-                        document.querySelectorAll('a.xEHeAoReCVFWVBfTqEralWUiaipwGujg.scale-down')
+                        document.querySelectorAll('a.scale-down')
                     ).map(link => link.href);
                 }
             });
