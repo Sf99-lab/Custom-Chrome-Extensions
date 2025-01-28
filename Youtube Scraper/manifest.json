@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Channel Scraper",
+  "version": "1.0.2",
+  "permissions": [
+    "scripting",
+    "tabs",
+    "activeTab",
+    "storage",
+     "sidePanel"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Youtube Scraper"
+  },
+  "host_permissions": [
+    "*://*.youtube.com/*"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  }
+}

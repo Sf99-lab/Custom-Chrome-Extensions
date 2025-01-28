@@ -78,7 +78,7 @@ async function processNextUrl() {
         // Process the tab
         await extractLinkedInProfiles(tab.id);
         //if complete process
-        if (currentUrlIndex === currentUrls.length-1) {
+        if (currentUrlIndex === currentUrls.length - 1) {
             alert('Linkedin Profile Extraction Completed');
 
         }
@@ -110,16 +110,34 @@ function handleDownloadClick() {
     downloadCSV(profileLinks);
 }
 // Helper function to download CSV
-function downloadCSV(data) {
-    const csvContent = "data:text/csv;charset=utf-8," + Array.from(data).join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "linkedin_profiles.csv");
+function downloadCSV(dataSet, filename = 'linkedin_profiles.csv') {
+    // Step 1: Convert Set to an array
+    const profiles = Array.from(dataSet);
+
+    if (profiles.length === 0) {
+        console.error('No data to download.');
+        return;
+    }
+
+    // Step 2: Convert the array of objects to CSV format
+    const headers = Object.keys(profiles[0]).join(','); // Get the headers (keys of the object)
+    const rows = profiles.map(profile =>
+        Object.values(profile).map(value => `"${value}"`).join(',')
+    ); // Convert each object to a CSV row
+
+    const csvContent = [headers, ...rows].join('\n'); // Combine headers and rows
+
+    // Step 3: Create a blob and trigger download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
+
 
 async function extractLinkedInProfiles(tabId) {
     // Helper function to scroll to the bottom of the page
@@ -141,17 +159,61 @@ async function extractLinkedInProfiles(tabId) {
             const result = await chrome.scripting.executeScript({
                 target: { tabId },
                 func: () => {
-                    return Array.from(
-                        document.querySelectorAll('a.scale-down')
-                    ).map(link => link.href);
+                    // return Array.from(
+                    //     document.querySelectorAll('a.scale-down')
+                    // ).map(link => link.href);
+
+                    const lists = document.querySelectorAll('ul[role="list"]');
+                    let foundList = null;
+
+                    for (let lis of lists) {
+                        let i = lis.querySelectorAll('li');
+                        if (i.length > 3) {
+                            foundList = lis; // Store the found list
+                            break; // Stop the loop
+                        }
+                    }
+
+
+                    if (foundList) { // Ensure lists is not null
+                        const items = foundList.querySelectorAll('li');
+                        //console.log(items);
+
+                        let profiles = [];
+
+                        items.forEach((list) => {
+                            const verifiedBadge = list.querySelector('svg[aria-label="Verified member"]');
+                            const premiumBadge = list.querySelector('li-icon[aria-label="Premium member"]');
+                            const linkFound = list.querySelector('a.scale-down');
+
+                            if (linkFound) {
+                                //console.log(linkFound.href);
+
+                                // Construct a profile object
+                                let profile = {
+                                    profile_URL: linkFound.href,
+                                    Account_Type: verifiedBadge ? 'Verified' : premiumBadge ? 'Premium' : ''
+                                };
+
+                                profiles.push(profile); // Add profile object to the array
+                            }
+                        });
+
+                        //console.log(profiles); // Log the final array of profiles
+                        return profiles;
+                    } else {
+                        console.error('No list found with the specified selector.');
+                    }
+
                 }
             });
 
             // Add the links to the Set
             if (result && result[0] && result[0].result) {
-                result[0].result.forEach(link => {
-                    profileLinks.add(link);
+                result[0].result.forEach(profile => {
+                    profileLinks.add(profile); // Add each profile object or link
                 });
+
                 updateStatus();
             }
 

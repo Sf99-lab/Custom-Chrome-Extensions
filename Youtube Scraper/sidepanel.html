@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YouTube Scraper</title>
+  <style>
+    body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+div {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #FF0000; /* YouTube red */
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+h2 {
+    color: #606060;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+    border-color: #FF0000;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+}
+
+button {
+    background-color: #FF0000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #CC0000;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#download {
+    background-color: #065fd4; /* YouTube blue */
+}
+
+#download:hover {
+    background-color: #0056b3;
+}
+
+#processed-count {
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    margin-top: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    div {
+        padding: 15px;
+    }
+    
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+  </style>
+</head>
+<body>
+<div>
+  <h1>YouTube Scraper</h1>
+  <input id="searchUrl" placeholder="Enter YouTube url ">
+  <button id="start">Start Scraping</button>
+  <button id="download">Download CSV</button>
+  <h2 id="processed-count">Processed Channels: 0</h2>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
