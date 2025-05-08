@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Instagram DM Automator</title>
+  <script src="lib/papaparse.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Instagram DM Automator</h1>
+    
+    <div class="section">
+      <h2>Import CSV</h2>
+      <input type="file" id="csvFile" accept=".csv">
+    </div>
+    
+    <div class="section">
+      <h2>Queue Status</h2>
+      <div id="queueInfo">
+        <p>Profiles loaded: <span id="profileCount">0</span></p>
+        <p>Messages sent: <span id="sentCount">0</span></p>
+        <p>Next message in: <span id="timer">0</span> seconds</p>
+      </div>
+    </div>
+    
+    <div class="section">
+      <button id="startBtn" disabled>Start Sending</button>
+      <button id="stopBtn" disabled>Stop</button>
+    </div>
+    
+    <div class="section">
+      <h2>Log</h2>
+      <div id="logContainer"></div>
+    </div>
+  </div>
+  
+  <script src="sidepanel.js"></script>
+</body>
+</html>

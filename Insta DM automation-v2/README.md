@@ -1,0 +1,1 @@
+Upload csv file with Instagram profile URLs and custom messages. Click 'Send Message' button to start sending messages to the Profiles.
