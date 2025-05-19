@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ticket Data Collector</title>
+  <style>
+    :root {
+      --primary-color: #0077cc;
+      --primary-hover: #0066b3;
+      --bg-color: #f8f9fa;
+      --border-color: #dee2e6;
+      --text-color: #333;
+      --light-text: #6c757d;
+    }
+    
+    html, body { 
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body { 
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 15px;
+      box-sizing: border-box;
+      min-width: 300px;
+      max-width: 100%;
+    }
+    
+    h3 {
+      color: var(--primary-color);
+      margin-top: 0;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 18px;
+    }
+    
+    #data-container { 
+      display: none; /* Hidden but still available for the JS functionality */
+    }
+    
+    button { 
+      padding: 8px 16px; 
+      background: var(--primary-color); 
+      color: white; 
+      border: none; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      margin: 0 6px 0 0;
+      transition: background-color 0.2s;
+      font-size: 14px;
+      flex: 1;
+    }
+    
+    button:hover { 
+      background: var(--primary-hover); 
+    }
+    
+    button:disabled { 
+      background: #ccc; 
+      cursor: not-allowed; 
+    }
+    
+    .input-group { 
+      margin-bottom: 12px; 
+      background-color: white;
+      padding: 12px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    .input-group label { 
+      display: block; 
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: var(--text-color);
+      font-size: 14px;
+    }
+    
+    .input-group input, .input-group textarea { 
+      width: 100%; 
+      padding: 8px; 
+      box-sizing: border-box;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 14px;
+      resize: vertical;
+    }
+    
+    .input-group textarea:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0, 119, 204, 0.1);
+    }
+    
+    .input-stats {
+      font-size: 12px;
+      color: var(--light-text);
+      margin-top: 1px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    #status { 
+      margin: -7px 0; 
+      font-weight: bold;
+      padding: 10px 12px;
+      background-color: white;
+      border-left: 4px solid var(--primary-color);
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      font-size: 14px;
+    }
+    
+    .progress { 
+      margin: 12px 0;
+      background-color: white;
+      padding: 12px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      font-size: 14px;
+    }
+    
+    .progress-bar {
+      height: 8px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary-color);
+      width: 0%;
+      transition: width 0.3s;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      width: 100%;
+    }
+    
+    #downloadBtn {
+      background-color: #28a745;
+    }
+    
+    #downloadBtn:hover {
+      background-color: #218838;
+    }
+    
+    @media (min-width: 500px) {
+      body {
+        padding: 20px;
+      }
+      
+      .input-group {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h3>Ticket Data Collector</h3>
+  
+  <div class="input-group">
+    <label for="urlInput">URLs (one per line):</label>
+    <textarea id="urlInput" rows="6" placeholder="https://example.com/event1&#10;https://example.com/event2"></textarea>
+    <div class="input-stats">
+      <span>One URL per line</span>
+      <span>Valid URLs: <span id="urlCount">0</span></span>
+    </div>
+  </div>
+  
+  <div class="input-group">
+    <label for="proxyInput">Proxies (optional):</label>
+    <textarea id="proxyInput" rows="5" placeholder="ip:port:username:password&#10;ip:port:username:password"></textarea>
+    <div class="input-stats">
+      <span>Format: ip:port:username:password</span>
+      <span>Valid Proxies: <span id="proxyCount">0</span></span>
+    </div>
+  </div>
+  
+  <div id="status">Ready to collect data</div>
+  
+  <div class="progress">
+    Processed: <span id="processed">0</span> / <span id="total">0</span>
+  </div>
+  
+  <div class="button-group">
+    <button id="startBtn">Start Collection</button>
+    <button id="downloadBtn">Download Results</button>
+  </div>
+  
+  <!-- Hidden container for data that's needed by the JS -->
+  <div id="data-container" style="display:none;"></div>
+  
+  <script src="sidepanel.js"></script>
+</body>
+</html>

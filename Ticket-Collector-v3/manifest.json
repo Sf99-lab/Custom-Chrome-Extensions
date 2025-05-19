@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Ticket Data Collector",
+  "version": "1.0",
+  "permissions": ["activeTab", "scripting", "sidePanel", 
+ "tabs", "storage", "proxy"],
+  "host_permissions": ["https://concerts.livenation.com/*", "https://www.ticketmaster.com/*", "https://www.ticketmaster.ca/*"],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://concerts.livenation.com/*", "https://www.ticketmaster.com/*", "https://www.ticketmaster.ca/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+      "type": "module"
+  }
+  
+}
