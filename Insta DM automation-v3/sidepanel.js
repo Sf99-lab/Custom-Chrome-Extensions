@@ -130,62 +130,58 @@ function processNextProfile() {
     // delay for 15 to 20 seconds
     //const delay = Math.floor(Math.random() * 5000) + 15000;
 
-    chrome.storage.local.get(profile.url, (result) => {
-        if (result[profile.url]) {
-            logMessage(`User ${profile.url} already messaged. Skipping...`, 'duplicate');
-            // Skip sending the message
-            currentIndex++;
-            processNextProfile();
-        } else {
-            // Open the profile in a new tab
-            chrome.tabs.create({ url: profile.url, active: true }, (tab) => {
-                // Store the current tab id for closing in next iteration
-                previousTabId = tab.id;
-                chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
-                    if (tabId === tab.id && changeInfo.status === 'complete') {
-                        tabId = tab.id;
-                        // Remove listener after it's used
-                        chrome.tabs.onUpdated.removeListener(listener);
+    // Open the profile in a new tab
+    chrome.tabs.create({ url: profile.url, active: true }, (tab) => {
+        // Store the current tab id for closing in next iteration
+        previousTabId = tab.id;
+        chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
+            if (tabId === tab.id && changeInfo.status === 'complete') {
+                tabId = tab.id;
+                // Remove listener after it's used
+                chrome.tabs.onUpdated.removeListener(listener);
 
-                        // Execute the content script in the new tab
-                        chrome.scripting.executeScript({
-                            target: { tabId: tab.id },
-                            files: ['content.js']
-                        }, () => {
-                            // Send the message to the content script
-                            chrome.tabs.sendMessage(tab.id, {
-                                action: 'sendDM',
-                                message: profile.message,
-                                tabId: tab.id
-                            }, (response) => {
-                                if (chrome.runtime.lastError) {
-                                    logMessage(`Error processing ${profile.url}: ${chrome.runtime.lastError.message}`, 'error');
-                                } else if (response && response.success) {
-                                    sentCount++;
-                                    document.getElementById('sentCount').textContent = sentCount;
-                                    logMessage(`Message sent to ${profile.url}`, 'success');
-                                    chrome.storage.local.set({ [profile.url]: true });
-                                } else {
-                                    logMessage(`Failed to send message to ${profile.url}`, 'error');
-                                }
+                // Execute the content script in the new tab
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['content.js']
+                }, () => {
+                    // Send the message to the content script
+                    chrome.tabs.sendMessage(tab.id, {
+                        action: 'sendDM',
+                        message: profile.message,
+                        tabId: tab.id
+                    }, (response) => {
+                        if (chrome.runtime.lastError) {
+                            logMessage(`Error processing ${profile.url}: ${chrome.runtime.lastError.message}`, 'error');
+                        } else if (response && response.alreadyContacted && response.success) {
+                            logMessage(`The person ${profile.url} has already been contacted`, 'duplicate');
+                            sentCount++;
+                            document.getElementById('sentCount').textContent = sentCount;
+                        }
+                        else if (response && response.success) {
+                            sentCount++;
+                            document.getElementById('sentCount').textContent = sentCount;
+                            logMessage(`Message sent to ${profile.url}`, 'success');
+                        } else {
+                            logMessage(`Failed to send message to ${profile.url}`, 'error');
+                        }
 
-                                // Close the tab after processing
-                                setTimeout(() => {
-                                    chrome.tabs.remove(tab.id);
-                                }, 6000);
+                        // Close the tab after processing
+                        setTimeout(() => {
+                            chrome.tabs.remove(tab.id);
+                        }, 6000);
 
-                                // Schedule next message
-                                currentIndex++;
-                                updateTimer(delay);
-                                setTimeout(processNextProfile, delay);
-                            });
-                        });
-                    }
+                        // Schedule next message
+                        currentIndex++;
+                        updateTimer(delay);
+                        setTimeout(processNextProfile, delay);
+                    });
                 });
-            });
-        };
+            }
+        });
     });
-}
+};
+
 
 function updateTimer(delay) {
     nextMessageTime = Date.now() + delay;

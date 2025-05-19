@@ -1,7 +1,13 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'sendDM') {
         sendDM(request.message, request.tabId)
-            .then(() => sendResponse({ success: true }))
+            .then((result) => {
+                if (result && result.alreadyContacted) {
+                    sendResponse({ success: true, alreadyContacted: true });
+                } else {
+                    sendResponse({ success: true });
+                }
+            })
             .catch(error => sendResponse({ success: false, error: error.message }));
         return true; // Keep the message channel open for async response
     }
@@ -153,24 +159,32 @@ async function clickSend() {
 async function sendDM(message, tabId) {
     return new Promise((resolve, reject) => {
         // Wait for the page to load
-        detectElement('svg[aria-label="Options"]').then( async found => {
+        detectElement('svg[aria-label="Options"]').then(async found => {
             if (found) {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 // Try to find the message button in different locations
                 let messageButtonL1 = await checkInLocation1();
                 if (messageButtonL1) {
                     console.log('Message button found');
-                    // wait before inputing message
-                    detectElement('div[aria-label="Message"][contenteditable="true"]').then(found => {
+                    detectElement('div[role="button"][aria-label="Double tap to like"]', 6, 1000).then(found => {
                         if (found) {
-                            let c2 = inputMessage(message);
-                            //console.log(c2)
-                            if (c2) {
-                                clickSend();
-                                resolve();
-                            }
+                            console.log("The person alreadyContacted");
+                            resolve({ alreadyContacted: true });
                         } else {
-                            console.log('Element not found.');
+
+                            // wait before inputing message
+                            detectElement('div[aria-label="Message"][contenteditable="true"]').then(found => {
+                                if (found) {
+                                    let c2 = inputMessage(message);
+                                    //console.log(c2)
+                                    if (c2) {
+                                        clickSend();
+                                        resolve({ success: true });
+                                    }
+                                } else {
+                                    console.log('Element not found.');
+                                }
+                            });
                         }
                     });
 
@@ -181,20 +195,27 @@ async function sendDM(message, tabId) {
                     console.log('Message button found in L 2 ', messageButtonL2);
                     if (messageButtonL2) {
                         console.log('Message button found in Location 2');
-                        // wait before inputing message
-                        // Usage
-                        detectElement('div[aria-label="Message"][contenteditable="true"]').then(found => {
+                        //const alreadyContacted = document.querySelector('div[role="button"][aria-label="Double tap to like"]');
+                        detectElement('div[role="button"][aria-label="Double tap to like"]', 6, 1000).then(found => {
                             if (found) {
-                                console.log('Element found!');
-                                let c2 = inputMessage(message);
-                                //console.log(c2)
-                                if (c2) {
-                                    console.log('Message inputted suscess');
-                                    clickSend();
-                                    resolve();
-                                }
+                                console.log("The person alreadyContacted");
+                                resolve({ alreadyContacted: true });
                             } else {
-                                console.log('Element not found.');
+                                // wait before inputing message
+                                detectElement('div[aria-label="Message"][contenteditable="true"]').then(found => {
+                                    if (found) {
+                                        console.log('Element found!');
+                                        let c2 = inputMessage(message);
+                                        //console.log(c2)
+                                        if (c2) {
+                                            console.log('Message inputted suscess');
+                                            clickSend();
+                                            resolve({ success: true });
+                                        }
+                                    } else {
+                                        console.log('Element not found.');
+                                    }
+                                });
                             }
                         });
 
@@ -225,7 +246,3 @@ function detectElement(selector, maxAttempts = 15, interval = 1000) {
         }, interval);
     });
 }
-
-
-
-console.log('Content script loaded');
