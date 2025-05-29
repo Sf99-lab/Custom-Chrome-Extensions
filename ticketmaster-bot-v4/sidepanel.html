@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ticketmaster Bot</title>
+  <style>
+    :root {
+      --primary-color: #026cdf;
+      --secondary-color: #f8f9fa;
+      --success-color: #4CAF50;
+      --danger-color: #f44336;
+      --text-color: #333;
+      --border-color: #ddd;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      width: 100%;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: var(--text-color);
+      background-color: #fff;
+      padding: 15px;
+      font-size: 14px;
+    }
+    
+    .container {
+      max-width: 100%;
+    }
+    
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      font-size: 18px;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 8px;
+      text-align: center;
+    }
+    
+    h3 {
+      color: var(--primary-color);
+      margin: 5px 0 5px;
+      font-size: 16px;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 12px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(2, 108, 223, 0.2);
+    }
+    
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background-color 0.2s;
+      border: none;
+    }
+    
+    #startBtn {
+      background-color: var(--success-color);
+      color: white;
+    }
+    
+    #startBtn:hover {
+      background-color: #3d8b40;
+    }
+    
+    #stopBtn {
+      background-color: var(--danger-color);
+      color: white;
+    }
+    
+    #stopBtn:hover {
+      background-color: #d32f2f;
+    }
+    
+    #downloadBtn {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    #downloadBtn:hover {
+      background-color: #0056b3;
+    }
+    
+    #status {
+      margin: 2px 0;
+      text-align: center;
+      font-weight: bold;
+      padding: 8px;
+      border-radius: 4px;
+      background-color: var(--secondary-color);
+    }
+    
+    #dataSection {
+      margin-top: 2px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 5px;
+    }
+    
+    #dataContainer {
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 12px;
+      background-color: var(--secondary-color);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 8px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      position: sticky;
+      top: -12px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    tr:hover {
+      background-color: rgba(2, 108, 223, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Ticket Monitor</h2>
+    <div class="form-group" style="display: flex; gap: 10px;">
+      <div style="flex: 1;">
+        <label for="minPrice">Min Price ($):</label>
+        <input type="number" id="minPrice" min="0">
+      </div>
+      <div style="flex: 1;">
+        <label for="maxPrice">Max Price ($):</label>
+        <input type="number" id="maxPrice" min="0">
+      </div>
+    </div>
+   <!--  <div class="form-group" style="display: flex; gap: 10px;">
+      <div style="flex: 1;">
+        <label for="minRow">Min Row:</label>
+        <input type="number" id="minRow" min="0" value="0">
+      </div>
+      <div style="flex: 1;">
+        <label for="maxRow">Max Row:</label>
+        <input type="number" id="maxRow" min="0" value="999">
+      </div>
+    </div> -->
+    <div class="form-group">
+      <label for="ticketQuantity">Number of Tickets to Collect:</label>
+      <input type="number" id="ticketQuantity" min="1" value="1">
+    </div>
+    <button id="startBtn">Start Monitoring</button>
+    <button id="stopBtn">Stop Monitoring</button>
+   <label for="ext">Current Status: </label><div id="status">Ready</div>
+    
+    <div id="dataSection">
+      <h3>Extracted Ticket Data</h3>
+      <div id="dataContainer">
+        <p>No data available yet. Click on Ticket Flipping Extension to collect ticket data.</p>
+      </div>
+      <div id="totalTickets" style="text-align: center; font-weight: bold; margin: 10px 0;">Total Available Tickets: 0</div>
+      <button id="downloadBtn">Download CSV</button>
+    </div>
+  </div>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

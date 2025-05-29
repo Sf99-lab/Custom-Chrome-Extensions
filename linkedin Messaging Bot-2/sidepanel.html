@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Messaging Panel</title>
+    <style>
+        /* General body styling */
+
+        body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: table-cell;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    flex-direction: column; /* Stack items vertically */
+}
+
+        /* Center container for all elements */
+        .center-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: -webkit-fill-available;;
+            text-align: center;
+            margin-top: 0px;
+        }
+
+        /* Style for the heading */
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+            margin-top: -20px;
+        }
+
+        /* File upload styling */
+        label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+            margin-bottom: 2px;
+            transition: all 0.3s ease;
+        }
+
+        label:hover {
+            background-color: #f0f0f0;
+        }
+
+        label button {
+            background-color: #0073b1;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        label span {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Start button styling */
+        #startButton {
+            padding: 12px 25px;
+            background-color: #0073b1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        #startButton:hover {
+            background-color: #005582;
+        }
+
+        /* Speed selector styling */
+        #speed-selector {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Pause/resume button at the bottom */
+        .pause-resume-container {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #pauseResumeButton {
+            padding: 12px 25px;
+            background-color: #0073b1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        #pauseResumeButton:hover {
+            background-color: #005582;
+        }
+        .message-container {
+    margin-top: 20px;
+    text-align: center;
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: -webkit-fill-available;; /* Match the center-container width */
+}
+
+.message-container p {
+    font-size: 18px;
+    color: #555;
+    margin: 5px 0;
+}
+    </style>
+</head>
+
+<body>
+    <div class="center-container">
+        <h1>LinkedIn Messaging</h1>
+
+        <div>
+            <label for="upload-file" id="upload-label">
+                <input type="file" id="upload-file" hidden>
+                <button>+</button> <span>Upload File</span>
+            </label>
+        </div>
+
+        <button id="startButton">Start Messaging</button>
+
+        <select id="speed-selector">
+            <option value="fast">Fast</option>
+            <option value="medium">Medium</option>
+            <option value="slow">Slow</option>
+        </select>
+    </div>
+    <div class="message-container">
+        <p id="time-running"></p>
+        <p id="visited"></p>
+        <p id="number-of-clicks"></p>
+        
+    </div>
+
+
+
+    <script src="sidepanel.js"></script>
+</body>
+
+</html>

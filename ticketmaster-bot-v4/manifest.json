@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Ticketmaster Auto-Buy",
+  "version": "1.0",
+  "description": "Automatically monitors and purchases tickets on Ticketmaster",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "*://*.ticketmaster.com/*", "*://*.ticketmaster.ca/*", "*://*.concerts.livenation.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.ticketmaster.com/*", "*://*.ticketmaster.ca/*", "*://*.concerts.livenation.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

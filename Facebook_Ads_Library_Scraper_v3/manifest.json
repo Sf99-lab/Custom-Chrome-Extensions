@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Facebook Ad Library URL Extractor",
+  "version": "1.0.2",
+  "description": "Extracts URLs from Facebook Ad Library by scrolling automatically",
+  "permissions": ["sidePanel", "activeTab","tabs", "scripting", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Facebook Ad Extractor"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.facebook.com/ads/library/*", "https://web.facebook.com/ads/library/*",
+       "https://m.facebook.com/ads/library/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
